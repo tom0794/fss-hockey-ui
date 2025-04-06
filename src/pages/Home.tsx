@@ -1,7 +1,10 @@
-import React from 'react'
+import { Box, Heading, Text } from "@chakra-ui/react"
 
-const Home: React.FC = () => {
-  return <h1>FSS Hockey</h1>
+export default function Home() {
+  return (
+    <Box p={8}>
+      <Heading mb={4}>Welcome to the FSS Hockey App</Heading>
+      <Text>Track teams, stats, and more.</Text>
+    </Box>
+  )
 }
-
-export default Home

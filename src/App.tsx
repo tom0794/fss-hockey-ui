@@ -1,18 +1,29 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import Teams from './pages/Teams'
+// src/App.tsx
+import { Route, Routes } from "react-router-dom"
+import Home from "./pages/Home"
+import Teams from "./pages/Teams"
+import Layout from "./components/Layout"
 
-const App: React.FC = () => {
+function App() {
   return (
-    <div>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/teams" element={<Teams />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Home />
+          </Layout>
+        }
+      />
+      <Route
+        path="/teams"
+        element={
+          <Layout>
+            <Teams />
+          </Layout>
+        }
+      />
+    </Routes>
   )
 }
 

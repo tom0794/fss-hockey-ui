@@ -1,14 +1,40 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+// src/components/Navbar.tsx
+import {
+  Box,
+  Flex,
+  Link as ChakraLink,
+  Spacer,
+  Heading,
+  IconButton,
+  useColorMode
+} from "@chakra-ui/react"
+//import useColorMode from "@chakra-ui/color-mode"
+import { Link } from "react-router-dom"
+import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 
-const Navbar: React.FC = () => {
+export default function Navbar() {
+  const { colorMode, toggleColorMode } = useColorMode()
+
   return (
-    <nav style={{ padding: '1rem', background: '#f4f4f4' }}>
-      <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
-      <Link to="/players" style={{ marginRight: '1rem' }}>Players</Link>
-      <Link to="/teams">Teams</Link>
-    </nav>
+    <Box bg="blue.500" color="white" px={6} py={4} boxShadow="sm">
+      <Flex align="center">
+        <Heading size="md">
+          <Link to="/">FSS Hockey</Link>
+        </Heading>
+        <Spacer />
+        <Flex align="center" gap={4}>
+          <ChakraLink as={Link} to="/">Home</ChakraLink>
+          <ChakraLink as={Link} to="/teams">Teams</ChakraLink>
+          <IconButton
+            size="sm"
+            aria-label="Toggle color mode"
+            onClick={toggleColorMode}
+            variant="ghost"
+          >
+            {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+          </IconButton>
+        </Flex>
+      </Flex>
+    </Box>
   )
 }
-
-export default Navbar
