@@ -8,7 +8,6 @@ import {
   IconButton,
   useColorMode
 } from "@chakra-ui/react"
-//import useColorMode from "@chakra-ui/color-mode"
 import { Link } from "react-router-dom"
 import { MoonIcon, SunIcon } from "@chakra-ui/icons"
 
@@ -25,6 +24,7 @@ export default function Navbar() {
         <Flex align="center" gap={4}>
           <ChakraLink as={Link} to="/">Home</ChakraLink>
           <ChakraLink as={Link} to="/teams">Teams</ChakraLink>
+          <ChakraLink as={Link} to="/debug">Debug</ChakraLink>
           <IconButton
             size="sm"
             aria-label="Toggle color mode"
