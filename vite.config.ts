@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const backendHost = env.BACKEND_HOST || 'http://localhost'
   const backendPort = env.BACKEND_PORT || '8080'
   const backendUrl = `${backendHost}:${backendPort}`
+  console.log(`[vite] Proxy target: ${backendUrl}`)
 
   return {
     plugins: [react()],
