@@ -1,0 +1,60 @@
+name: Build and publish fss-hockey-ui
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - 'master'
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Increment patch version
+        id: version-increment
+        shell: bash
+        run: |
+          npm version patch --commit-hooks=false --git-tag-version=false
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build project
+        shell: bash
+        run: |
+          docker build . -t fss-hockey-ui:latest
+
+      - name: Tag and push image to ghcr.io
+        shell: bash
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag fss-hockey-ui:latest ghcr.io/${{ github.actor }}/fss-hockey-ui:${{ steps.version-increment.outputs.VERSION }}
+          docker tag fss-hockey-ui:latest ghcr.io/${{ github.actor }}/fss-hockey-ui:latest
+          docker push ghcr.io/${{ github.actor }}/fss-hockey-ui:${{ steps.version-increment.outputs.VERSION }}
+          docker push ghcr.io/${{ github.actor }}/fss-hockey-ui:latest
+
+      - name: Commit version increment and tag repository
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "[ci skip] Update version to ${{ steps.version-increment.outputs.VERSION }}"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git
+          git push -u origin ${BRANCH}
+          git tag ${{ steps.version-increment.outputs.VERSION }}
+          git push origin tag ${{ steps.version-increment.outputs.VERSION }}
