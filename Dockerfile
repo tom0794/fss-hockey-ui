@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 WORKDIR /app
 COPY . .
 RUN npm install && npm run build
@@ -22,3 +22,6 @@ ENTRYPOINT ["/start.sh"]
 
 # Expose the necessary port
 EXPOSE 80
+
+LABEL org.opencontainers.image.source=https://github.com/tom0794/fss-hockey-ui
+LABEL org.opencontainers.image.description="fss-hockey-ui"
