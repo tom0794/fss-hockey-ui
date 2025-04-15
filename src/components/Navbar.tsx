@@ -23,6 +23,7 @@ export default function Navbar() {
         <Spacer />
         <Flex align="center" gap={4}>
           <ChakraLink as={Link} to="/">Home</ChakraLink>
+          <ChakraLink as={Link} to="/schedule">Schedule</ChakraLink>
           <ChakraLink as={Link} to="/teams">Teams</ChakraLink>
           <ChakraLink as={Link} to="/debug">Debug</ChakraLink>
           <IconButton

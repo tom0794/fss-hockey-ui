@@ -1,8 +1,8 @@
-// src/App.tsx
 import { Route, Routes } from "react-router-dom"
 import Home from "./pages/Home"
 import Teams from "./pages/Teams"
 import Debug from "./pages/Debug"
+import Schedule from "./pages/Schedule"
 import Layout from "./components/Layout"
 
 function App() {
@@ -29,6 +29,14 @@ function App() {
         element={
           <Layout>
             <Debug />
+          </Layout>
+        }
+      />
+      <Route
+        path="/schedule"
+        element={
+          <Layout>
+            <Schedule />
           </Layout>
         }
       />
