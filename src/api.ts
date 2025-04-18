@@ -12,3 +12,8 @@ export const endpointGet = async (endpoint: string) => {
   const res = await apiClient.get(endpoint)
   return res.data
 }
+
+export const fetchSchedule = async (date: string) => {
+  const res = await apiClient.get(`/schedule/getGamesOnDate/${date}`)
+  return res.data
+}
