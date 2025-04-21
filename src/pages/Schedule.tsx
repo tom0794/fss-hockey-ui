@@ -3,8 +3,8 @@ import { Box, Text, VStack, SimpleGrid, Spinner, useToast } from '@chakra-ui/rea
 import { endpointGet } from '../api'
 import { format } from 'date-fns'
 import DateSelector from '../components/DateSelector'
-import { useColorModeValue } from '@chakra-ui/react'
-
+import { useColorModeValue, Button } from '@chakra-ui/react'
+import { ArrowRightIcon } from '@chakra-ui/icons'
 
 interface Team {
   teamId: number
@@ -98,7 +98,7 @@ const Schedule: React.FC = () => {
               <Text>No games scheduled for this day.</Text>
             </VStack>
           ) : (
-            <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 6 }} spacing={4} mt={6}>
+            <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={4} mt={6}>
               {scheduleData.map((game) => (
                 <Box
                   key={game.gameId}
@@ -107,6 +107,7 @@ const Schedule: React.FC = () => {
                   borderRadius="md"
                   p={4}
                   minHeight="100px"
+                  maxW="220px"
                   bg={boxBg}
                   _hover={{ bg: boxHoverBg }}
                 >
@@ -128,6 +129,26 @@ const Schedule: React.FC = () => {
                   >
                     {game.homeTeam.abbreviation}
                   </Text>
+
+                  <Box
+                    position="absolute"
+                    top="50%"
+                    right="8px"
+                    transform="translateY(-50%)"
+                    display="flex"
+                    alignItems="center"
+                  >
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      leftIcon={<ArrowRightIcon />}
+                      onClick={() => {
+                        console.log(`Simulate game: ${game.gameId}`)
+                      }}
+                    >
+                      Sim Game
+                    </Button>
+                  </Box>
                 </Box>
               ))}
             </SimpleGrid>
