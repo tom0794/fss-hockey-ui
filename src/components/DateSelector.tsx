@@ -39,7 +39,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ selectedDate, onChange }) =
   }
 
   return (
-    <Box p={6}>
+    <Box p={0}>
       <Flex align="center" justify="center" gap={4}>
         <IconButton
           aria-label="Previous Day"

@@ -37,8 +37,8 @@ const Schedule: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const toast = useToast()
-  const boxBg = useColorModeValue('gray.50', 'gray.700')
-  const boxHoverBg = useColorModeValue('gray.100', 'gray.600')
+  const boxBg = useColorModeValue('gray.300', 'gray.700')
+  const boxHoverBg = useColorModeValue('teal', 'gray.600')
 
 
   const loadSchedule = async (date: Date) => {
@@ -79,7 +79,20 @@ const Schedule: React.FC = () => {
 
   return (
     <Box p={6}>
-      <DateSelector selectedDate={selectedDate} onChange={setSelectedDate} />
+      <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
+        <DateSelector selectedDate={selectedDate} onChange={setSelectedDate} />
+        <Button
+          colorScheme="teal"
+          isDisabled={scheduleData.length === 0}
+          leftIcon={<ArrowRightIcon />}
+          onClick={() => {
+            console.log('Simulate all games')
+          }}
+        >
+          Simulate All Games
+        </Button>
+      </Box>
+
 
       {loading && (
         <Box display="flex" justifyContent="center" mt={8}>
@@ -146,7 +159,7 @@ const Schedule: React.FC = () => {
                         console.log(`Simulate game: ${game.gameId}`)
                       }}
                     >
-                      Sim Game
+                      Simulate
                     </Button>
                   </Box>
                 </Box>
