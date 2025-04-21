@@ -14,7 +14,6 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon, CalendarIcon } from '@chakra-ui/icons'
 import { format, addDays, subDays } from 'date-fns'
 
-// 🔥 Add props
 interface DateSelectorProps {
   selectedDate: Date
   onChange: (newDate: Date) => void

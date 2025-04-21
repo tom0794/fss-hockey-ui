@@ -1,19 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { Box, VStack, Text, useToast, Spinner } from '@chakra-ui/react'
+import { Box, Text, VStack, SimpleGrid, Spinner, useToast } from '@chakra-ui/react'
 import { endpointGet } from '../api'
-import DateSelector from '../components/DateSelector'
 import { format } from 'date-fns'
+import DateSelector from '../components/DateSelector'
+import { useColorModeValue } from '@chakra-ui/react'
+
+
+interface Team {
+  teamId: number
+  divisionId: number
+  city: string
+  name: string
+  abbreviation: string
+  primaryColour: string
+  secondaryColour: string
+}
 
 interface Game {
   gameId: string
-  homeTeam: {
-    city: string
-    name: string
-  }
-  roadTeam: {
-    city: string
-    name: string
-  }
+  dayId: number
+  homeTeam: Team
+  roadTeam: Team
 }
 
 interface ScheduleResponse {
@@ -30,6 +37,9 @@ const Schedule: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const toast = useToast()
+  const boxBg = useColorModeValue('gray.50', 'gray.700')
+  const boxHoverBg = useColorModeValue('gray.100', 'gray.600')
+
 
   const loadSchedule = async (date: Date) => {
     setLoading(true)
@@ -78,25 +88,51 @@ const Schedule: React.FC = () => {
       )}
 
       {!loading && (
-        <VStack spacing={4} mt={6}>
+        <>
           {error ? (
-            <Text color="red.500">{error}</Text>
+            <VStack spacing={4} mt={6}>
+              <Text color="red.500">{error}</Text>
+            </VStack>
+          ) : scheduleData.length === 0 ? (
+            <VStack spacing={4} mt={6}>
+              <Text>No games scheduled for this day.</Text>
+            </VStack>
           ) : (
-            <>
-              {scheduleData.length === 0 ? (
-                <Text>No games scheduled for this day.</Text>
-              ) : (
-                scheduleData.map((game) => (
-                  <Box key={game.gameId} p={4} borderWidth="1px" borderRadius="lg">
-                    <Text fontWeight="bold">
-                      {game.homeTeam.city} {game.homeTeam.name} @ {game.roadTeam.city} {game.roadTeam.name}
-                    </Text>
-                  </Box>
-                ))
-              )}
-            </>
+            <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 6 }} spacing={4} mt={6}>
+              {scheduleData.map((game) => (
+                <Box
+                  key={game.gameId}
+                  position="relative"
+                  borderWidth="1px"
+                  borderRadius="md"
+                  p={4}
+                  minHeight="100px"
+                  bg={boxBg}
+                  _hover={{ bg: boxHoverBg }}
+                >
+                  <Text
+                    position="absolute"
+                    top="20px"
+                    left="8px"
+                    fontWeight="bold"
+                    fontSize="lg"
+                  >
+                    {game.roadTeam.abbreviation}
+                  </Text>
+                  <Text
+                    position="absolute"
+                    bottom="20px"
+                    left="8px"
+                    fontWeight="bold"
+                    fontSize="lg"
+                  >
+                    {game.homeTeam.abbreviation}
+                  </Text>
+                </Box>
+              ))}
+            </SimpleGrid>
           )}
-        </VStack>
+        </>
       )}
     </Box>
   )
